@@ -32,7 +32,7 @@ def renomear():
         for contador, arq in enumerate(os.listdir()):
             if os.path.isfile(arq) and arq.endswith(escolha_tipo):
                 nome_arq, exten_arq = os.path.splitext(arq)
-                nome_arq = padrao_nome + ' ' + str(contador)
+                nome_arq = padrao_nome + ' ' + str(contador+1)
                 nome_novo = f'{nome_arq}{exten_arq}'
 
                 renomeacoes.append((arq, nome_novo))
@@ -43,10 +43,11 @@ def renomear():
         return render_template('index.html', renomeacoes=renomeacoes, success_message='Arquivos renomeados com sucesso.')
 
     except Exception as e:
-        error_message = f'Ocorreu um erro: {e}'
+        error_message = f'Diretorio: {diretorio} nao encontrado.'
+        print(e)
         print(error_message)
         logging.error(error_message)
-        return render_template('renomeador.html', error_message=error_message)
+        return render_template('index.html', error_message=error_message)
 
     return redirect(url_for("index"))
 

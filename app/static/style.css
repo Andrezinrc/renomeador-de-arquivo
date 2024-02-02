@@ -4,8 +4,11 @@
   box-sizing: border-box;
   font-family: sans-serif;
 }
+.titulo{
+  white-space: nowrap;
+}
 .formulario{
-  max-width: 450px;
+  max-width: 500px;
   position: absolute;
   left: 50%;
   top: 50%;
