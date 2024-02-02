@@ -21,35 +21,31 @@ def renomear():
 
         logging.info(f'Diretório: {os.getcwd()}')
 
-        tipos_arquivos = set()
-        for arquivo in os.listdir():
-            if os.path.isfile(arquivo):
-                _, extensao = os.path.splitext(arquivo)
-                tipos_arquivos.add(extensao)
-
         renomeacoes = []
 
         for contador, arq in enumerate(os.listdir()):
-            if os.path.isfile(arq) and arq.endswith(escolha_tipo):
-                nome_arq, exten_arq = os.path.splitext(arq)
-                nome_arq = padrao_nome + ' ' + str(contador+1)
-                nome_novo = f'{nome_arq}{exten_arq}'
+            if os.path.isfile(arq):
+                _, extensao = os.path.splitext(arq)
+                extensao = extensao.lower().strip()
 
-                renomeacoes.append((arq, nome_novo))
-                os.rename(arq, nome_novo)
+                if escolha_tipo.lower().strip() == 'todos' or extensao in escolha_tipo.split(','):
+                    nome_arq, exten_arq = os.path.splitext(arq)
+                    nome_arq = padrao_nome + ' ' + str(contador + 1)
+                    nome_novo = f'{nome_arq}{exten_arq}'
+
+                    renomeacoes.append((arq, nome_novo))
+                    os.rename(arq, nome_novo)
 
         logging.info(f'Renomeações realizadas em {diretorio}: {renomeacoes}')
 
         return render_template('index.html', renomeacoes=renomeacoes, success_message='Arquivos renomeados com sucesso.')
 
     except Exception as e:
-        error_message = f'Diretorio: {diretorio} nao encontrado.'
+        error_message = f'Diretório: {diretorio} não encontrado.'
         print(e)
         print(error_message)
         logging.error(error_message)
         return render_template('index.html', error_message=error_message)
-
-    return redirect(url_for("index"))
 
 if __name__ == '__main__':
     app.run(debug=True)
